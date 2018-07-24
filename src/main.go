@@ -39,7 +39,7 @@ func main() {
 			}
 		}(conn)
 	})
-
+	fmt.Println("Listening ", os.Args[1])
 	http.ListenAndServe(os.Args[1], nil)
 	fmt.Println("exited", os.Args[1])
 }
