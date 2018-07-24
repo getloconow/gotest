@@ -32,9 +32,22 @@ func main() {
 
 			for range ch {
 				conn.WriteJSON(myStruct{
-					Username:  "mvansickle",
-					FirstName: "Michael",
-					LastName:  "Van Sickle",
+					Username: "mvansickle",
+				})
+			}
+		}(conn)
+	})
+
+	http.HandleFunc("/wsl", func(w http.ResponseWriter, r *http.Request) {
+		var conn, _ = upgrader.Upgrade(w, r, nil)
+		go func(conn *websocket.Conn) {
+			for {
+				_, _, err := conn.ReadMessage()
+				if err != nil {
+					conn.Close()
+				}
+				conn.WriteJSON(myStruct{
+					Username: "mvansickle",
 				})
 			}
 		}(conn)
@@ -45,7 +58,5 @@ func main() {
 }
 
 type myStruct struct {
-	Username  string `json:"username"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	Username string `json:"username"`
 }
