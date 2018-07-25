@@ -6,7 +6,8 @@ function test() {
     admin.on('connect', function (conn) {
         conn.on('message', function (message) {
             if (message.type === 'utf8') {
-                console.log("Received: '" + message.utf8Data);
+                // console.log("Received: '" + message.utf8Data);
+                console.log(message.utf8Data.split('|'))
             }
         });
         var stdin = process.openStdin();
@@ -15,22 +16,24 @@ function test() {
             start = Date.now()
             conn.sendUTF(d.toString().trim() + " | " + start.toString())
             // d.toString().trim()
-            console.log("yes")
+
         });
     })
-    admin.connect("ws://localhost:3000/admin")
+    admin.connect("ws://13.127.173.119:3000/admin")
 
     let client = new ws()
     client.on('connect', function (conn) {
         conn.on('message', function (message) {
-            end = Date.now()
+            let end = Date.now()
             let latency = end - start
             if (message.type === 'utf8') {
-                console.log("Received: '" + message.utf8Data + "', Time :", latency);
+
+                time = message.utf8Data.split('|')
+                console.log(end - +time[1], message.utf8Data)
             }
         });
     })
-    client.connect("ws://localhost:3000/")
+    client.connect("ws://13.127.173.119:3000/")
 }
 
 test()
