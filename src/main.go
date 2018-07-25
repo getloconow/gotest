@@ -23,6 +23,7 @@ func uptimeServer(serverChan chan chan []byte) {
 			for _, c := range clients {
 				c <- data
 			}
+			fmt.Println("sent")
 		}
 	}
 }
