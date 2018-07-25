@@ -48,8 +48,9 @@ function tclient(id, port) {
     client.connect(`ws://13.127.173.119:${port}/`)
 }
 
-ps = 30
-pps = 400
+ps = 81
+pps = 100
+
 if (process.argv[2] == 'admin') {
     console.log("admin")
     for (let port = 3000; port < 3000 + ps; port++)
