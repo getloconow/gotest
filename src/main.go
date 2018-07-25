@@ -20,7 +20,7 @@ func uptimeServer(serverChan chan chan []byte) {
 		case client, _ := <-serverChan:
 			clients = append(clients, client)
 		case data, _ := <-mainChan:
-			for x, c := range clients {
+			for _, c := range clients {
 				c <- data
 			}
 		}
