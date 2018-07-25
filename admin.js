@@ -19,21 +19,36 @@ function test() {
 
         });
     })
-    admin.connect("ws://13.127.173.119:3000/admin")
+    admin.connect("ws://localhost:3000/admin")
 
+
+}
+
+function tclient() {
     let client = new ws()
     client.on('connect', function (conn) {
         conn.on('message', function (message) {
             let end = Date.now()
-            let latency = end - start
             if (message.type === 'utf8') {
 
                 time = message.utf8Data.split('|')
                 console.log(end - +time[1], message.utf8Data)
             }
         });
-    })
-    client.connect("ws://13.127.173.119:3000/")
-}
 
-test()
+        var stdin = process.openStdin();
+
+        stdin.addListener("data", function (d) {
+            start = Date.now()
+            conn.sendUTF(d.toString().trim() + " | " + start.toString())
+            // d.toString().trim()
+
+        });
+    })
+    client.connect("ws://localhost:3000/")
+}
+if (process.argv[2] == 'admin') {
+    console.log("admin")
+    test()
+}
+else tclient()

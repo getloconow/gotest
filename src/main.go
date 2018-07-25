@@ -59,13 +59,14 @@ func main() {
 		errChan := make(chan error, 1)
 		go func(ws *websocket.Conn) {
 			for {
-				_, _, err := ws.ReadMessage()
+				_, text, err := ws.ReadMessage()
 				if err != nil {
 
 					ws.Close()
 					errChan <- err
 					return
 				}
+				mainChan <- text
 				// do something with user message
 			}
 		}(ws)
